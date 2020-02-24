@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      mode: 'welcome',
+      mode: 'read',
       subject: {title:"WEB", sub:"World Wide Web!" },
       welcome:{title:'Welcome', desc:'Hello, React'},
       contents: [
@@ -35,9 +35,14 @@ class App extends Component {
           sub={this.state.subject.sub} /> */}
         <header>
             <h1><a href="/" onClick={function(e){
-              // a 태그 기본 동작 막기
               e.preventDefault();
-            }}>{this.state.subject.title}</a></h1>
+              // setState를 사용해서 변한거를 리로드 시켜야함 this.state.mode = 'welcome';
+              this.setState({
+                mode:'welcome'
+              });
+            //이벤트를 설치할 때 this를 찾을수 없어서 에러나면 함수가 끝난 직후에 
+            // bind(this)라고 적으면 됨
+            }.bind(this)}>{this.state.subject.title}</a></h1>
             {this.state.subject.sub}
         </header>
         <TOC data={this.state.contents} />
