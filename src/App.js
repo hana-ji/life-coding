@@ -8,9 +8,12 @@ import './App.css';
 class App extends Component {
   constructor(props){
     super(props);
-    // 부모인 App의 입장에서는 state라는 내부정보 사용
     this.state = {
+      // 현재 페이지가 웰컴 페이지인지 읽기 페이지인지 구분 위해서
+      mode: 'welcome',
       subject: {title:"WEB", sub:"World Wide Web!" },
+      // 모드가 웰컴일 때
+      welcome:{title:'Welcome', desc:'Hello, React'},
       contents: [
         {id:1, title:'HTML', desc:'HTML is information'},
         {id:2, title:'CSS', desc:'CSS is for design'},
@@ -19,15 +22,21 @@ class App extends Component {
     }
   }
   render() {
+    var _title, _desc = null;
+    if(this.state.mode === 'welcome'){
+      _title = this.state.welcome.title;
+      _desc = this.state.welcome.desc;
+    } else if(this.state.mode === 'read'){
+      _title = this.state.contents[0].title;
+      _desc = this.state.contents[0].desc;
+    }
     return(
       <div className="App">
         <Subject 
           title={this.state.subject.title} 
           sub={this.state.subject.sub} />
-        <Subject title="hana" sub="지하나!" />
-        {/* 자식한테 전달할 때는 props로 사용*/}
         <TOC data={this.state.contents} />
-        <Content title="HTML" desc="HTML is HyperTextMarkup Language." />
+        <Content title={_title} desc={_desc} />
       </div>
     );
   }
