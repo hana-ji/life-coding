@@ -9,10 +9,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      // 현재 페이지가 웰컴 페이지인지 읽기 페이지인지 구분 위해서
       mode: 'welcome',
       subject: {title:"WEB", sub:"World Wide Web!" },
-      // 모드가 웰컴일 때
       welcome:{title:'Welcome', desc:'Hello, React'},
       contents: [
         {id:1, title:'HTML', desc:'HTML is information'},
@@ -32,9 +30,16 @@ class App extends Component {
     }
     return(
       <div className="App">
-        <Subject 
+        {/* <Subject 
           title={this.state.subject.title} 
-          sub={this.state.subject.sub} />
+          sub={this.state.subject.sub} /> */}
+        <header>
+            <h1><a href="/" onClick={function(e){
+              // a 태그 기본 동작 막기
+              e.preventDefault();
+            }}>{this.state.subject.title}</a></h1>
+            {this.state.subject.sub}
+        </header>
         <TOC data={this.state.contents} />
         <Content title={_title} desc={_desc} />
       </div>
