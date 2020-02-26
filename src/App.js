@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TOC from "./components/TOC";
 import Content from "./components/Content";
 import Subject from "./components/Subject";
+import Control from "./components/Control";
 import './App.css';
 
 
@@ -58,12 +59,18 @@ class App extends Component {
           });
           }.bind(this)}
          data={this.state.contents} />
-         {/* 생성(누르면 mode:create -> content 컴포넌트가 글을 추가할때 사용하는 컴포(폼 들어있음)로 바뀜 -> 저장 시 contents에 새로운 본문 추가) 
-             수정 삭제 버튼 컴포넌트 */}
+        {/* 호출 될 때 첫번째 인자를 받을수 있어야함 function(요기) */}
+        <Control onChangeMode={function(_mode){
+          this.setState({
+            mode:_mode
+          });
+        }.bind(this)} />
         <Content title={_title} desc={_desc} />
       </div>
     );
   }
 }
+
+// 현재의 상태에 따라서 mode의 값을 바뀌게 함
 
 export default App;
