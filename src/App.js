@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TOC from "./components/TOC";
-import Content from "./components/Content";
+import ReadContent from "./components/ReadContent";
+import CreateContent from './components/CreateContent';
 import Subject from "./components/Subject";
 import Control from "./components/Control";
 import './App.css';
@@ -22,10 +23,12 @@ class App extends Component {
     }
   }
   render() {
-    var _title, _desc = null;
+    var _title, _desc, _article = null;
     if(this.state.mode === 'welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      // 기존에 있던 ReadContent를 _article이라는 변수에 줬음
+      _article = <ReadContent title={_title} desc={_desc} />
     } else if(this.state.mode === 'read'){
       var i = 0;
       while(i < this.state.contents.length){
@@ -33,12 +36,15 @@ class App extends Component {
         if(data.id === this.state.selected_content_id) {
           _title = data.title;
           _desc = data.desc;
-          // 강제로 와일 문 끝냄/ 사용 시 조건문 끝나고 조건문 바깥 쪽이 실행됨
           break;
         }
         i = i + 1;
       }
-
+      // 모드가 read 일 때도 ReadContent가 나오는건 마찬가지임
+      _article = <ReadContent title={_title} desc={_desc} />
+      // 모드가 Create 일때 createContent가 화면에 출력되게 할거임
+    } else if(this.state.mode === 'create'){
+      _article = <CreateContent />
     }
     return(
       <div className="App">
@@ -59,18 +65,17 @@ class App extends Component {
           });
           }.bind(this)}
          data={this.state.contents} />
-        {/* 호출 될 때 첫번째 인자를 받을수 있어야함 function(요기) */}
         <Control onChangeMode={function(_mode){
           this.setState({
             mode:_mode
           });
         }.bind(this)} />
-        <Content title={_title} desc={_desc} />
+        {/* <ReadContent title={_title} desc={_desc} /> 이 부분이 가변적으로 바뀔수 있게하기위해
+          {_article} 이라는 변수로 처리 mode가 welcome이거나 read일 때는 ReadContent가 나옴 */}
+        {_article}
       </div>
     );
   }
 }
-
-// 현재의 상태에 따라서 mode의 값을 바뀌게 함
 
 export default App;
