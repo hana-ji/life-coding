@@ -6,10 +6,15 @@ class CreateContent extends Component {
         <article>
             <h2>Create</h2>
             <form action="/create_process" method="post"
-            // 서브밋 버튼을 클릭했을 때 서브밋 버튼을 포함하고 있는 폼 태그에 온서브밋이라는 이벤트를 설치하면 그 이벤트가 실행됨
+            // 온서브밋 이벤트가 발생햇을 때 실행하도록 함
                 onSubmit={function(e){
                     e.preventDefault();
-                    alert("Submit!!!!");
+                    // debugger; 로 경로 찾아서 해도되는데 찾기가 어려움 ㅜ
+                    // CreateConente onSubmit이라는 프롭스 호출
+                    this.props.onSubmit(
+                        e.target.title.value,
+                        e.target.desc.value
+                    );
                 }.bind(this)}
             >
                 <p><input type="text" name="title" placeholder="title"></input></p>

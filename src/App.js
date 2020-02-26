@@ -10,6 +10,9 @@ import './App.css';
 class App extends Component {
   constructor(props){
     super(props);
+    // = 3? 마지막 contents의 마지막 아이디와 같아야 함
+    // state값으로 하지않고 객체값으로 한 이유 : 데이터추가(푸쉬) 할때 id값을 뭐로할까? 할때 사용하는 정보일 뿐이라서
+    this.max_content_id = 3;
     this.state = {
       mode: 'create',
       selected_content_id:2,
@@ -27,7 +30,6 @@ class App extends Component {
     if(this.state.mode === 'welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
-      // 기존에 있던 ReadContent를 _article이라는 변수에 줬음
       _article = <ReadContent title={_title} desc={_desc} />
     } else if(this.state.mode === 'read'){
       var i = 0;
@@ -40,11 +42,26 @@ class App extends Component {
         }
         i = i + 1;
       }
-      // 모드가 read 일 때도 ReadContent가 나오는건 마찬가지임
       _article = <ReadContent title={_title} desc={_desc} />
-      // 모드가 Create 일때 createContent가 화면에 출력되게 할거임
     } else if(this.state.mode === 'create'){
-      _article = <CreateContent />
+      // submit 버튼이 클릭됬을 때 CreateContent의 이벤트로 설치된 함수를 실행
+      _article = <CreateContent onSubmit={function(_title,_desc){
+        // add content to this.state.contents
+        // 위에 부분이 실행될 때 마다 기존에 아이디 값 + 1 증가
+        this.max_content_id = this.max_content_id + 1;
+        // this.state.contents.push(
+        //   {id:this.max_content_id, title:_title, desc:_desc}
+        //   ); < 오리지널 데이터를 바꿈 나중에 개선할때 까다로움
+        // _contents = concat의 리턴값 (데이터 추가된 값)
+        var _contents = this.state.contents.concat(
+          {id:this.max_content_id, title:_title, desc:_desc}
+        );
+        // 기존에 가지고있던 값이 새롭게 만들어진 데이터로 교체됨
+        this.setState({
+          contents:_contents
+        });
+        // console.log(_title, _desc) 로 title과 desc 값 얻은거 확인
+      }.bind(this)}/>
     }
     return(
       <div className="App">
@@ -70,8 +87,6 @@ class App extends Component {
             mode:_mode
           });
         }.bind(this)} />
-        {/* <ReadContent title={_title} desc={_desc} /> 이 부분이 가변적으로 바뀔수 있게하기위해
-          {_article} 이라는 변수로 처리 mode가 welcome이거나 read일 때는 ReadContent가 나옴 */}
         {_article}
       </div>
     );
