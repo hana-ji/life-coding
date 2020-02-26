@@ -52,15 +52,14 @@ class App extends Component {
           }
           />
         <TOC 
-          // 체인지페이지 이벤트가 발생했을 때
           onChangePage={function(id){
-            // this.setState를 이용해서 mode의 값과 함께 selected id의 값 0 이라고 되있는 부분에 해주면 됨
             this.setState({
               mode:'read',
-              // 숫자열로 강제로 만들기 Number()
               selected_content_id:Number(id)
           });
           }.bind(this)}
+          // App이라는 상위 컴포넌트가 TOC라는 하위 컴포넌트에 데이터 라는 프롭스로 값을 전달
+          // TOC를 클릭했을 때 App의 값을 바꾸려면 이벤트를 구현해서 실행됬을 때 상위 state값을 호출해서 바꿀 수 있다.
          data={this.state.contents} />
         <Content title={_title} desc={_desc} />
       </div>
