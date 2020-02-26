@@ -10,7 +10,6 @@ class App extends Component {
     super(props);
     this.state = {
       mode: 'read',
-      // 기본으로 2번 컨텐트가 선택되게 함
       selected_content_id:2,
       subject: {title:"WEB", sub:"World Wide Web!" },
       welcome:{title:'Welcome', desc:'Hello, React'},
@@ -58,9 +57,9 @@ class App extends Component {
               selected_content_id:Number(id)
           });
           }.bind(this)}
-          // App이라는 상위 컴포넌트가 TOC라는 하위 컴포넌트에 데이터 라는 프롭스로 값을 전달
-          // TOC를 클릭했을 때 App의 값을 바꾸려면 이벤트를 구현해서 실행됬을 때 상위 state값을 호출해서 바꿀 수 있다.
          data={this.state.contents} />
+         {/* 생성(누르면 mode:create -> content 컴포넌트가 글을 추가할때 사용하는 컴포(폼 들어있음)로 바뀜 -> 저장 시 contents에 새로운 본문 추가) 
+             수정 삭제 버튼 컴포넌트 */}
         <Content title={_title} desc={_desc} />
       </div>
     );
