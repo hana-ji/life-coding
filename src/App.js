@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
     this.max_content_id = 3;
     this.state = {
-      mode: 'create',
+      mode: 'welcome',
       selected_content_id:2,
       subject: {title:"WEB", sub:"World Wide Web!" },
       welcome:{title:'Welcome', desc:'Hello, React'},
@@ -110,9 +110,39 @@ class App extends Component {
           }.bind(this)}
          data={this.state.contents} />
         <Control onChangeMode={function(_mode){
-          this.setState({
-            mode:_mode
-          });
+          // _mode값이 delete 면 삭제가 시작
+          if(_mode === 'delete'){
+            // 정말로 삭제할거냐고 물어봄 window.confirm() (윈도우는 꼭 같이 써줘야함)
+            // 확인 누르면 true, 캔슬 누르면 false
+            if(window.confirm('really?')){
+              // 1.누구를 통해 삭제할 것인가? = selected_content_id
+              // 2.어디에있는 데이터를 삭제할 것인가? = contents
+              var _contents = Array.from(this.state.contents);
+              // ㄴ 나중에 setState때도 사용할거라 복제해놓음
+              var i = 0;
+              while(i < _contents.length){
+                if(_contents[i].id === this.state.selected_content_id){
+                  // 어디서부터 어디까지를 지울 것인가(발견한 id 값부터 1개를 지우겠다)
+                  _contents.splice(i,1);
+                  // 값 바꿨으므로 순회 끝
+                  break;
+                }
+                i = i + 1;
+              }
+              this.setState({
+                // 삭제가 잘 됬다면 모드를 read로 바꿔줌
+                mode:'welcome',
+                contents:_contents
+              });
+              // 삭제됬다고 알림
+              alert('deleted!');
+            }
+            // _mode값이 !== delete 면 페이지 전환만  해주면 됨
+          } else {
+            this.setState({
+              mode:_mode
+            });
+          }
         }.bind(this)} />
         {this.getContent()}
       </div>
